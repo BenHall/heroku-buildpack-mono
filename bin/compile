@@ -9,5 +9,4 @@ echo "-----> Compile script called"
 # fail fast
 set -e
 
-echo "-----> Output version"
-mono --version
+echo "-----> Output something"
