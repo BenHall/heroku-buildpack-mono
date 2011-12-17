@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
 
+# Install/Compile Mono on Cedar stack (OS: Ubuntu Server 10.04 (Lucid Lynx))
+
+echo "-----> Compile script called"
+
+
 # fail fast
 set -e
+
+echo "-----> Output version"
+mono --version

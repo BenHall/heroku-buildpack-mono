@@ -1,2 +1,5 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
+
+echo "Detect script called"
+echo "Mono not configured?" && exit 1
