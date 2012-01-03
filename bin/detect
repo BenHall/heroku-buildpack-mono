@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-echo "Detect script called"
-echo "Mono not configured?" && exit 1
+files=$(ls $1/*.sln 2> /dev/null | wc -l)
+if [ "$files" != "0" ]; then
+  echo "Mono" && exit 0
+else
+  echo "no" && exit 1
+fi

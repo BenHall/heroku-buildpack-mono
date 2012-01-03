@@ -1,12 +1,60 @@
 #!/usr/bin/env bash
 # bin/compile <build-dir> <cache-dir>
 
-# Install/Compile Mono on Cedar stack (OS: Ubuntu Server 10.04 (Lucid Lynx))
-
-echo "-----> Compile script called"
-
-
 # fail fast
 set -e
 
-echo "-----> Output something"
+mktmpdir() {
+  dir=$(mktemp -t mono-$1-XXXX)
+  rm -rf $dir
+  mkdir -p $dir
+  echo $dir
+}
+
+# config
+MONO_VERSION="2.10.8"
+S3_BUCKET="bh-buildpack-mono"
+
+# parse and derive params
+BUILD_DIR=$1
+CACHE_DIR=$2
+
+# s3 packages
+MONO_PACKAGE="http://${S3_BUCKET}.s3.amazonaws.com/mono-${MONO_VERSION}.tar.gz"
+
+# vendor directories
+VENDORED_MONO="$(mktmpdir mono)"
+
+# download and unpack packages
+echo "-----> Fetching Mono binaries"
+mkdir -p $VENDORED_MONO  && curl $MONO_PACKAGE -s -o -  | tar xzf - -C $VENDORED_MONO
+
+# vendor node into the slug       <------ THis should be the entire directory??? 
+PATH="$BUILD_DIR/bin:$PATH"
+echo "-----> Vendoring mono $MONO_VERSION"
+mkdir -p "$BUILD_DIR/bin"
+cp "$VENDORED_MONO/bin/mono" "$BUILD_DIR/bin/mono"
+
+# setting up paths for building
+PATH="$VENDORED_MONO/bin:$PATH"
+INCLUDE_PATH="$VENDORED_MONO/include"
+export CPATH="$INCLUDE_PATH"         # <------ What are these???  Does htis mean I don't copy everything?
+export CPPPATH="$INCLUDE_PATH"
+
+#build app
+SLN=$(ls *.sln | head -1)
+BUILDCMD="$CACHE_DIR/bin/xbuild $SLN"
+echo "-----> building via $BUILDCMD"
+
+# unpack existing cache
+rm -rf $CACHE_TARGET_DIR
+if [ -d $CACHE_STORE_DIR ]; then
+  cp -a $CACHE_STORE_DIR $CACHE_TARGET_DIR
+fi
+
+# repack cache with new assets
+if [ -d $CACHE_TARGET_DIR ]; then
+  rm -rf $CACHE_STORE_DIR
+  mkdir -p $(dirname $CACHE_STORE_DIR)
+  cp -a $CACHE_TARGET_DIR $CACHE_STORE_DIR
+fi

@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
 
-echo "Release script called"
+cat <<EOF
+---
+config_vars:
+  PATH: /usr/local/bin:/usr/bin:/bin
+EOF
