@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
-if [ -f $1/Nancy.Demo.Hosting.Self.sln ]; then
-  echo "Mono" && exit 0
+files=$(ls $1/*.sln 2> /dev/null | wc -l)
+if [ "$files" != "0" ]; then
+  echo "Scala" && exit 0
 else
   echo "no" && exit 1
 fi
