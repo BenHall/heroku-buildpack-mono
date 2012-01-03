@@ -1,2 +1,5 @@
 mono-2.10.2/
+mono-2.10.8/
 .DS_STORE
+*.tgz
+*.gz
