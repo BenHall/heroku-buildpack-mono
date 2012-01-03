@@ -42,9 +42,11 @@ export CPATH="$INCLUDE_PATH"         # <------ What are these???  Does htis mean
 export CPPPATH="$INCLUDE_PATH"
 
 #build app
-SLN=$(ls *.sln | head -1)
-BUILDCMD="$CACHE_DIR/bin/xbuild $SLN"
+SLN=$(ls $BUILD_DIR/*.sln | head -1)
+cd "$CACHE_DIR/bin"
+BUILDCMD="xbuild $SLN"
 echo "-----> building via $BUILDCMD"
+$(BUILDCMD)
 
 # unpack existing cache
 rm -rf $CACHE_TARGET_DIR
