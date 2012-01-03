@@ -47,15 +47,3 @@ BUILDCMD="$VENDORED_MONO/bin/mono $VENDORED_MONO/lib/mono/4.0/xbuild.exe $SLN"
 echo "-----> building via $BUILDCMD"
 eval $BUILDCMD
 
-# unpack existing cache
-rm -rf $CACHE_TARGET_DIR
-if [ -d $CACHE_STORE_DIR ]; then
-  cp -a $CACHE_STORE_DIR $CACHE_TARGET_DIR
-fi
-
-# repack cache with new assets
-if [ -d $CACHE_TARGET_DIR ]; then
-  rm -rf $CACHE_STORE_DIR
-  mkdir -p $(dirname $CACHE_STORE_DIR)
-  cp -a $CACHE_TARGET_DIR $CACHE_STORE_DIR
-fi
