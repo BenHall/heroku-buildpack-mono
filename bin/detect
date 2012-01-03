@@ -3,7 +3,7 @@
 
 files=$(ls $1/*.sln 2> /dev/null | wc -l)
 if [ "$files" != "0" ]; then
-  echo "Scala" && exit 0
+  echo "Mono" && exit 0
 else
   echo "no" && exit 1
 fi
