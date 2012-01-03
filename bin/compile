@@ -5,7 +5,7 @@
 set -e
 
 mktmpdir() {
-  dir=$(mktemp -t mono-$1-XXXX)
+  dir=$(mktemp -t mono-XXXX)
   rm -rf $dir
   mkdir -p $dir
   echo $dir
@@ -45,7 +45,7 @@ export CPPPATH="$INCLUDE_PATH"
 SLN=$(ls $BUILD_DIR/*.sln | head -1)
 BUILDCMD="$VENDORED_MONO/bin/mono $VENDORED_MONO/lib/mono/4.0/xbuild.exe $SLN"
 echo "-----> building via $BUILDCMD"
-$(BUILDCMD)
+eval $BUILDCMD
 
 # unpack existing cache
 rm -rf $CACHE_TARGET_DIR
