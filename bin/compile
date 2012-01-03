@@ -29,19 +29,16 @@ VENDORED_MONO="$(mktmpdir mono)"
 echo "-----> Fetching Mono binaries"
 mkdir -p $VENDORED_MONO  && curl $MONO_PACKAGE -s -o -  | tar xzf - -C $VENDORED_MONO
 
-# vendor node into the slug       <------ THis should be the entire directory??? 
+# vendor node into the slug       
 PATH="$BUILD_DIR/bin:$PATH"
 echo "-----> Vendoring mono $MONO_VERSION"
-mkdir -p "$BUILD_DIR/bin"
-cp "$VENDORED_MONO/bin/mono" "$BUILD_DIR/bin/mono"
-echo "-----> Caching mono $CACHE_DIR"
-mkdir -p "$CACHE_DIR/"
-cp -r "$VENDORED_MONO/" "$CACHE_DIR/"
+mkdir -p "$BUILD_DIR/mono-build"
+cp -r "$VENDORED_MONO/" "$BUILD_DIR/mono-build/"
 
 # setting up paths for building
-PATH="$VENDORED_MONO/bin:$PATH"
-INCLUDE_PATH="$VENDORED_MONO/include"
-export CPATH="$INCLUDE_PATH"         # <------ What are these???  Does htis mean I don't copy everything?
+PATH="$BUILD_DIR/mono-build/bin:$VENDORED_MONO/bin:$PATH"
+INCLUDE_PATH="$BUILD_DIR/mono-build/include"
+export CPATH="$INCLUDE_PATH"     
 export CPPPATH="$INCLUDE_PATH"
 
 #build app
