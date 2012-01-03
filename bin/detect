@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # bin/detect <build-dir>
 
+echo "------> Testing $1"
+exit 0
 files=$(ls $1/*.sln 2> /dev/null | wc -l)
 if [ "$files" != "0" ]; then
   echo "Mono" && exit 0
 else
-  echo "$1 found no build" && exit 1
+  echo "no" && exit 1
 fi
