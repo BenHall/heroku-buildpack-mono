@@ -34,6 +34,9 @@ PATH="$BUILD_DIR/bin:$PATH"
 echo "-----> Vendoring mono $MONO_VERSION"
 mkdir -p "$BUILD_DIR/bin"
 cp "$VENDORED_MONO/bin/mono" "$BUILD_DIR/bin/mono"
+echo "-----> Caching mono $CACHE_DIR"
+mkdir -p "$CACHE_DIR/"
+cp -r "$VENDORED_MONO/" "$CACHE_DIR/"
 
 # setting up paths for building
 PATH="$VENDORED_MONO/bin:$PATH"
